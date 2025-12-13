@@ -8,6 +8,7 @@
 #include "usb.h"
 #include "video_gen.h"
 #include "video_overlay.h"
+
 #if defined(BUILD_VARIANT_VTX)
 #include "rtc6705.h"
 #include <rf_pa.h>
@@ -21,8 +22,10 @@ extern bool new_field;
 
 #define LED_BLINK_INTERVAL 100 // milliseconds
 #define DEBUG_LOOP_INTERVAL 100 // milliseconds
+#define LOGO_TIMEOUT_MS 4000 // 4 seconds
 
 void led_blink(void);
+void logo_timeout_check(void);
 
 void debug_print_loop(void)
 {
@@ -67,6 +70,7 @@ int main (void)
         msp_loop_process();
         led_blink();
         debug_print_loop();
+        logo_timeout_check();
 
 #if 0 // TODO: remove later
 // For test only - 3D cube animation
@@ -90,3 +94,23 @@ void led_blink(void)
     }
 }
 
+void logo_timeout_check(void)
+{
+    static uint32_t boot_time = 0;
+    static bool timeout_checked = false;
+    extern bool show_logo;
+
+    // Initialize boot time on first call
+    if (boot_time == 0) {
+        boot_time = HAL_GetTick();
+    }
+
+    // Check if LOGO_TIMEOUT_MS has elapsed, clear logo and version string if so
+    if (!timeout_checked && (HAL_GetTick() - boot_time) >= LOGO_TIMEOUT_MS) {
+        show_logo = false;
+        // Clear the canvas to remove version string
+        canvas_char_clean();
+        canvas_char_draw_complete();
+        timeout_checked = true;
+    }
+}
