@@ -4,6 +4,8 @@
  */
 #include "video_graphics.h"
 
+//#define HIGH_RAM
+
 #if defined(HIGH_RAM)
 #include <stdlib.h>
 #include <stdint.h>
@@ -27,6 +29,24 @@ extern uint8_t active_buffer;
 
 uint8_t video_frame_buffer[2][VIDEO_HEIGHT][VIDEO_BYTES_PER_LINE];
 CCMRAM_DATA uint8_t active_video_buffer = 0;
+
+
+
+void video_draw_rectangle(int x, int y, int w, int h, px_t color)
+{
+    for (int xx = x; x - xx < w; xx++)
+    {
+        video_draw_pixel(xx, y, color);
+        video_draw_pixel(xx, y+h, color);
+    }
+    for (int yy = y; y - yy < h; yy++)
+    {
+        video_draw_pixel(x, yy, color);
+        video_draw_pixel(x+w, yy, color);
+    }
+}
+
+
 
 void video_graphics_init(void)
 {

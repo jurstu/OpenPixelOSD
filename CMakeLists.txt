@@ -200,7 +200,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 # make a zip file containing the hex, bin, map and elf
 set(ZIP_NAME "${CMAKE_PROJECT_NAME}_${TARGET_MCU}_${CMAKE_BUILD_TYPE}${BUILD_NAME}")
 set(TARGET_LANGUAGES "C;ASM")
-set(MAP_FILE "${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME};LANGUAGES;${TARGET_LANGUAGES}.map")
+# set(MAP_FILE "${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME};LANGUAGES;${TARGET_LANGUAGES}.map")
 
 # Create ZIP after build completes
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

@@ -2,6 +2,8 @@
 #ifndef __MAIN_H
 #define __MAIN_H
 
+#define HIGH_RAM
+
 #include "stm32g4xx_hal.h"
 #include "stm32g4xx_ll_comp.h"
 #include "stm32g4xx_ll_exti.h"
